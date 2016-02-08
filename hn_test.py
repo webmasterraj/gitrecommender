@@ -30,7 +30,7 @@ def get_github_items_from_hn(hn, verbose=False):
         print '\n\n'.join(item.title+'\n'+item.url for item in hn_github_items)
     return hn_github_items
 
-def add_items_to_database(items):
+def add_items_to_database(items, verbose):
     db = DB()
 #     db.query("SET NAMES utf8;")
     for item in items:
@@ -40,15 +40,21 @@ def add_items_to_database(items):
                 item.title.replace("'", "''"),
                 item.url
                 )
-        print cmd
+        if verbose:
+            print cmd
         db.query(cmd)
+#        try:
+#            db.query(cmd)
+#        except mysql.connector.IntegrityError as err:
+#            pass
     db.commit() 
     return True
 
 if __name__=="__main__":
     hn = HackerNews()
-    items = get_github_items_from_hn(hn, verbose=True)
-    add_items_to_database(items)
+    verbose = True
+    items = get_github_items_from_hn(hn, verbose)
+    add_items_to_database(items, verbose)
 
 
 
