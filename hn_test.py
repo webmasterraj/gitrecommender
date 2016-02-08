@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
+import urlparse
+from datetime import datetime
 from hackernews import HackerNews
-from mysql import DB
+from mysql import DB, str_for_mysql, date_for_mysql
 
 # hn = HackerNews()
 
@@ -34,11 +36,24 @@ def add_items_to_database(items, verbose):
     db = DB()
 #     db.query("SET NAMES utf8;")
     for item in items:
-        cmd = """INSERT INTO hacker_news(id, submission_time, title, url) VALUES (%d, '%s', '%s', '%s')""" % (
+        url_path = urlparse.urlparse(item.url).path[1:]
+        url_path_groups = url_path.split('/')
+        github_repo_path = '/'.join(url_path_groups[:2])
+        cmd = """
+                INSERT INTO hacker_news(id, 
+                                        added_at,
+                                        submission_time,
+                                        title,
+                                        url,
+                                        github_repo_name) 
+                VALUES (%d, '%s', '%s', '%s', '%s', '%s')
+              """ % (
                 item.item_id,
-                item.submission_time.strftime("%Y-%m-%d %H:%M"),
-                item.title.replace("'", "''"),
-                item.url
+                date_for_mysql(datetime.now()),
+                date_for_mysql(item.submission_time),
+                str_for_mysql(item.title),
+                item.url,
+                github_repo_path
                 )
         if verbose:
             print cmd

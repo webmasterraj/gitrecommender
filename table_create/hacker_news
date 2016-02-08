@@ -1,0 +1,7 @@
+create table hacker_news (
+    id int,              
+    submission_time datetime,
+    title varchar(255),
+    url varchar(255),             
+    github_repo_name varchar(255));
+

@@ -1,0 +1,12 @@
+create table github_users (
+    added_at datetime,
+    id int,
+    username varchar (255),
+    full_name varchar(255),
+    email varchar(255),
+    location varchar(255),
+    created_at datetime,
+    public_repos_count int,
+    private_repos_count int,
+    followers_count int,
+    contributions_count int);

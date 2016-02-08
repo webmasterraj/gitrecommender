@@ -36,6 +36,19 @@ def get_db_variables():
     return DATABASES
  
 
+def str_for_mysql(s):
+    if isinstance(s, basestring):
+        s = s.replace("'", "''")
+    # Add any more string formatting steps here
+    return s
+    
+
+def date_for_mysql(d):
+    d = d.strftime("%Y-%m-%d %H:%M")
+    # Add any more date formatting steps here
+    return d
+
+
 class DB(object):
   conn = None
 
@@ -46,7 +59,7 @@ class DB(object):
                                 db_params['default']['PASSWORD'], 
                                 db_params['default']['NAME'], 
                                 charset='utf8')
-
+    print "DB >> Opened connection to database."
 
   def query(self, sql):
     try:
@@ -64,3 +77,12 @@ class DB(object):
     except (AttributeError, MySQLdb.OperationalError):
       self.connect()
       self.conn.commit()
+
+  def close(self):
+    try:
+      self.conn.close()
+      print "DB >> Closed connection to database."
+    except (AttributeError, MySQLdb.OperationalError):
+      pass
+
+

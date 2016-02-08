@@ -1,0 +1,9 @@
+create table github_user_starred_repos (
+    added_at datetime,
+    user_id int,
+    username varchar(255),
+    starred_repo_id int,
+    starred_repo_name varchar(255),
+    starred_at datetime);
+
+
