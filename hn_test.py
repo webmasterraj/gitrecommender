@@ -19,7 +19,7 @@ def get_hn_items(hn, verbose):
         try:
             items.append(hn.get_item(sid))
         except hackernews.HTTPError:
-            continue
+            print 'ERROR hackernews.HTTPError
         if verbose: 
             print "\t", i, "items"
     print "Got details for", len(items), "HN items" 
@@ -65,6 +65,7 @@ def add_items_to_database(items, verbose):
         try:
             db.query(cmd)
         except MySQLError as err:
+            print "ERROR:", err
             db.conn.rollback()
         else:
             db.commit() 
