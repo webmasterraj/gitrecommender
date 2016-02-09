@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import urlparse
 from datetime import datetime
+from MySQLdb import MySQLError
 from hackernews import HackerNews
 from mysql import DB, str_for_mysql, date_for_mysql
 
@@ -57,12 +58,13 @@ def add_items_to_database(items, verbose):
                 )
         if verbose:
             print cmd
-        db.query(cmd)
-#        try:
-#            db.query(cmd)
-#        except mysql.connector.IntegrityError as err:
-#            pass
-    db.commit() 
+#        db.query(cmd)
+        try:
+            db.query(cmd)
+        except MySQLError as err:
+            db.conn.rollback()
+        else:
+            db.commit() 
     return True
 
 if __name__=="__main__":
