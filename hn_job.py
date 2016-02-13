@@ -18,8 +18,8 @@ def get_hn_items(hn, verbose):
     for i, sid in enumerate(ids):
         try:
             items.append(hn.get_item(sid))
-        except hackernews.HTTPError:
-            print 'ERROR hackernews.HTTPError
+        except hackernews.HTTPError as err:
+            print 'ERROR:', err 
         if verbose: 
             print "\t", i, "items"
     print "Got details for", len(items), "HN items" 
