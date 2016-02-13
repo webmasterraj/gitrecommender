@@ -14,7 +14,6 @@ def get_hn_repos():
                             where from_hacker_news=1
                             """
                      ).fetchone()[0]  
-    last_job_time = None
     if not last_job_time:
         last_job_time = '1970-01-01' 
 
