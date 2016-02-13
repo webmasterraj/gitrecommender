@@ -8,17 +8,15 @@ from MySQLdb import MySQLError
 
 def get_hn_repos():
     db = DB()
-    # last_job_time = db.query("""
-    #                     SELECT max(added_at) 
-    #                     from github_repos 
-    #                     where from_hacker_news=1
-    #                     """
-    #                 ).fetchone()[0]  
+    last_job_time = db.query("""
+                            SELECT max(added_at) 
+                            from github_repos 
+                            where from_hacker_news=1
+                            """
+                     ).fetchone()[0]  
     last_job_time = None
     if not last_job_time:
         last_job_time = '1970-01-01' 
-    else:
-        last_job_time = (last_job_time)
 
     hn_repos_raw = db.query("""
                             SELECT github_repo_name 
