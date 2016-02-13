@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
+import argparse
 import urlparse
 from datetime import datetime
 from MySQLdb import MySQLError
-from hackernews import HackerNews
+import hackernews 
 from mysql import DB, str_for_mysql, date_for_mysql
 
 # hn = HackerNews()
@@ -71,31 +72,19 @@ def add_items_to_database(items, verbose):
             db.commit() 
     return True
 
+def arg_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--verbose", 
+                        help="Verbose output",
+                        action="store_true")
+    args = parser.parse_args()
+    verbose = True if args.verbose else False
+    return verbose
+
 if __name__=="__main__":
-    hn = HackerNews()
-    verbose = False
+    hn = hackernews.HackerNews()
+    verbose = arg_parser()
     items = get_github_items_from_hn(hn, verbose)
     add_items_to_database(items, verbose)
-
-
-
-
-# show_hn_ids = hn.show_stories()
-# print len(show_hn_ids), "total Show HN ids"
-# 
-# show_hn_stories = []
-# for sid in show_hn_ids:
-#     show_hn_stories.append(hn.get_item(sid))
-# 
-# show_hn_github_repos = [story for story in stories if 'github.com' in story.url]
-# print len(show_hn_github_repos), "Show HN stories from github"
-# 
-# hn_github_repos = [story for story in stories 
-#                    if 'github.com' in story.url 
-#                    and 'gist' not in story.url]
-# 
-# print('\n'.join([item.title for item in show_hn_github_repos 
-#        if item in hn_github_repos]))
-
 
 
