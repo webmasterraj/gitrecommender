@@ -23,7 +23,10 @@ def get_hn_repos():
                             where added_at > '%s' 
                             """ % last_job_time
                             ).fetchall()   
-    hn_repos = list(zip(*hn_repos_raw)[0])
+    if hn_repos_raw:
+        hn_repos = list(zip(*hn_repos_raw)[0])
+    else:
+        hn_repos = []
     db.close()
     return hn_repos
 
