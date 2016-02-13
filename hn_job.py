@@ -32,8 +32,8 @@ def get_github_items_from_hn(hn, verbose=False):
                       and  'github.com' in item.url
                       and 'gist' not in item.url]
     print(len(hn_github_items), "total github repos", '\n')
-    if verbose:
-        print '\n\n'.join(item.title+'\n'+item.url for item in hn_github_items)
+    # if verbose:
+    print '\n\n'.join(item.title+'\n'+item.url for item in hn_github_items)
     return hn_github_items
 
 def add_items_to_database(items, verbose):
@@ -73,7 +73,7 @@ def add_items_to_database(items, verbose):
 
 if __name__=="__main__":
     hn = HackerNews()
-    verbose = True
+    verbose = False
     items = get_github_items_from_hn(hn, verbose)
     add_items_to_database(items, verbose)
 
