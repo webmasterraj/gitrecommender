@@ -77,12 +77,13 @@ def get_details_for_repos(repo_names, from_hacker_news=False):
     db = DB()
     for r in repo_names:
         repo = g.get_repo(r)
-        if repo.id: 
-            try: 
+        try: 
+            name = repo.name
+        except Exception as err:
+            print "ERROR: ", err
+        else:
+            if repo.id:
                 print "\tAdding details for", repo.name
-            except Exception as err:
-                print "ERROR: ", err
-            else:
                 print "\t\t", repo.description
                 print
                 add_repo_to_db(db, repo, from_hacker_news) 
