@@ -34,7 +34,10 @@ def get_github_items_from_hn(hn, verbose=False):
                       and 'gist' not in item.url]
     print(len(hn_github_items), "total github repos", '\n')
     # if verbose:
-    print '\n\n'.join(item.title+'\n'+item.url for item in hn_github_items)
+    for item in hn_github_items:
+           print item.title
+           print item.url 
+           print '\n\n'
     return hn_github_items
 
 def add_items_to_database(items, verbose):
@@ -57,8 +60,8 @@ def add_items_to_database(items, verbose):
                 date_for_mysql(datetime.now()),
                 date_for_mysql(item.submission_time),
                 str_for_mysql(item.title),
-                item.url,
-                github_repo_path
+                str_for_mysql(item.url),
+                str_for_mysql(github_repo_path)
                 )
         if verbose:
             print cmd
