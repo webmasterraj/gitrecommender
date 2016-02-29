@@ -13,7 +13,7 @@ def repos_to_update():
                             from github_user_starred_repos
                             """
                      ).fetchone()[0]  
-    last_job_time = '1970-01-01'
+    last_job_time = '2016-02-21'
     repos_raw = db.query("""
                             SELECT id 
                             from github_repos   
@@ -39,25 +39,27 @@ def add_users_who_starred_repo(repo):
     db = DB()
     stargazers = repo.get_stargazers_with_dates()
     for i, s in enumerate(stargazers): 
-        print "\tAdding user %d: %s" % (i, s.user.login)
+        print "\tAdding user {0}: {1}".format(i, s.user.login)
         insert_user_repo_relationship(db, repo, s.user, s.starred_at)
         insert_user(db, s.user)
         add_users_other_stars(db, s.user)
         if i > git_details.MAX_USERS:
             print "**WARNING: More than %d users" % git_details.MAX_REPOS
             break
+    print "\t\tAdded {0} starred repos".format(i)
     db.close()
 
 
 def add_users_other_stars(db, user):
     stars = user.get_starred()
-    print "\tAdding user's other repos"
+    print "\t\tAdding user's other repos"
     for i, starred_repo in enumerate(stars):
         insert_user_repo_relationship(db, starred_repo, user, None)
-        print "\t\t%d starred repos" % i
+        print "\t\t{0} starred repos".format(i)
         if i > git_details.MAX_REPOS: 
             print "**WARNING: MORE than %d starred repos" % git_details.MAX_REPOS
             break
+    print "\t\tAdded {0} starred repos".format(i)
 
 
 def insert_user_repo_relationship(db, repo, user, date):
@@ -69,8 +71,8 @@ def insert_user_repo_relationship(db, repo, user, date):
                         user_id,
                         starred_repo_id,
                         starred_at)
-            VALUES ('%s', '%s', %d, '%s', %d, '%s', '%s')
-            """ % (
+            VALUES ('{0}', '{1}', {2}, {3}, '{4}')
+            """.format(
                 hash_object.hexdigest(),
                 date_for_mysql(datetime.now()),
                 user.id,
