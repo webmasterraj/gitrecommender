@@ -55,7 +55,7 @@ def add_users_other_stars(db, user):
     print "\t\tAdding user's other repos"
     for i, starred_repo in enumerate(stars):
         insert_user_repo_relationship(db, starred_repo, user, None)
-        print "\t\t{0} starred repos".format(i)
+        # print "\t\t{0} starred repos".format(i)
         if i > git_details.MAX_REPOS: 
             print "**WARNING: MORE than %d starred repos" % git_details.MAX_REPOS
             break
